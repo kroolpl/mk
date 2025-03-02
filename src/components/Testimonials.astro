@@ -1,0 +1,71 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const testimonials = [
+  {
+    text: t('testimonial1.text'),
+    author: t('testimonial1.author'),
+    position: t('testimonial1.position'),
+    image: 'https://randomuser.me/api/portraits/women/32.jpg'
+  },
+  {
+    text: t('testimonial2.text'),
+    author: t('testimonial2.author'),
+    position: t('testimonial2.position'),
+    image: 'https://randomuser.me/api/portraits/men/46.jpg'
+  },
+  {
+    text: t('testimonial3.text'),
+    author: t('testimonial3.author'),
+    position: t('testimonial3.position'),
+    image: 'https://randomuser.me/api/portraits/women/68.jpg'
+  }
+];
+---
+
+<section id="testimonials" class="section-padding bg-gray-50">
+  <div class="container">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4 text-dark">
+        {t('testimonials.title')}
+      </h2>
+      <p class="text-xl text-gray-600">
+        {t('testimonials.subtitle')}
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {testimonials.map((testimonial, index) => (
+        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 relative">
+          <!-- Quote icon -->
+          <div class="absolute top-6 right-6 text-primary/10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M13 14.725c0-5.141 3.892-10.519 10-11.725l.984 2.126c-2.215.835-4.163 3.742-4.38 5.746 2.491.392 4.396 2.547 4.396 5.149 0 3.182-2.584 4.979-5.199 4.979-3.015 0-5.801-2.305-5.801-6.275zm-13 0c0-5.141 3.892-10.519 10-11.725l.984 2.126c-2.215.835-4.163 3.742-4.38 5.746 2.491.392 4.396 2.547 4.396 5.149 0 3.182-2.584 4.979-5.199 4.979-3.015 0-5.801-2.305-5.801-6.275z"/>
+            </svg>
+          </div>
+          
+          <p class="text-gray-600 mb-6 relative z-10">
+            {testimonial.text}
+          </p>
+          
+          <div class="flex items-center">
+            <img 
+              src={testimonial.image} 
+              alt={testimonial.author} 
+              class="w-12 h-12 rounded-full mr-4 object-cover"
+              width="48"
+              height="48"
+            />
+            <div>
+              <h4 class="font-bold text-dark">{testimonial.author}</h4>
+              <p class="text-sm text-gray-500">{testimonial.position}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

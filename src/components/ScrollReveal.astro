@@ -1,0 +1,28 @@
+---
+interface Props {
+  animation?: 'fade-up' | 'fade-left' | 'fade-right';
+  duration?: number;
+  delay?: number;
+}
+
+const { 
+  animation = 'fade-up',
+  duration = 800,
+  delay = 0
+} = Astro.props;
+---
+
+<div
+  x-data="{ shown: false }"
+  x-intersect="shown = true"
+  x-bind:class="{
+    'opacity-0 translate-y-8': !shown && '${animation}' === 'fade-up',
+    'opacity-0 translate-x-8': !shown && '${animation}' === 'fade-left',
+    'opacity-0 -translate-x-8': !shown && '${animation}' === 'fade-right',
+    'opacity-100 translate-y-0 translate-x-0': shown
+  }"
+  x-bind:style="`transition-duration: ${duration}ms; transition-delay: ${delay}ms`"
+  class="transition-all ease-out"
+>
+  <slot />
+</div> 

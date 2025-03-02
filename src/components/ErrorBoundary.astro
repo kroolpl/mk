@@ -1,0 +1,20 @@
+---
+interface Props {
+  fallback?: string;
+}
+
+const { fallback = "Something went wrong" } = Astro.props;
+---
+
+<div x-data="{ hasError: false, errorMessage: '' }">
+  <div x-show="!hasError">
+    <slot />
+  </div>
+  
+  <div 
+    x-show="hasError"
+    class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg"
+  >
+    <p x-text="errorMessage || fallback"></p>
+  </div>
+</div> 

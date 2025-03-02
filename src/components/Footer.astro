@@ -1,0 +1,103 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { Image } from 'astro:assets';
+import logoSvg from '../assets/images/logo.svg';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const currentYear = new Date().getFullYear();
+
+const footerLinks = [
+  {
+    title: 'Services',
+    links: [
+      { name: 'Email Management', href: `/${lang}/#services` },
+      { name: 'Calendar Management', href: `/${lang}/#services` },
+      { name: 'Social Media', href: `/${lang}/#services` },
+      { name: 'Data Entry', href: `/${lang}/#services` },
+    ]
+  },
+  {
+    title: 'Company',
+    links: [
+      { name: 'About', href: `/${lang}/#about` },
+      { name: 'Testimonials', href: `/${lang}/#testimonials` },
+      { name: 'Contact', href: `/${lang}/#contact` },
+      { name: 'Privacy Policy', href: `/${lang}/privacy` },
+    ]
+  },
+  {
+    title: 'Connect',
+    links: [
+      { name: 'LinkedIn', href: '#', icon: 'i-uil-linkedin' },
+      { name: 'Twitter', href: '#', icon: 'i-uil-twitter' },
+      { name: 'Instagram', href: '#', icon: 'i-uil-instagram' },
+      { name: 'Facebook', href: '#', icon: 'i-uil-facebook' },
+    ]
+  }
+];
+---
+
+<footer class="bg-gray-50 border-t border-gray-100">
+  <div class="container py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Logo and description -->
+      <div class="space-y-4">
+        <div class="flex items-center gap-2">
+          <Image 
+            src={logoSvg} 
+            alt="VA Services Logo" 
+            width={40} 
+            height={40}
+            class="opacity-90"
+          />
+          <span class="text-xl font-bold text-gray-800">Services</span>
+        </div>
+        
+        <p class="text-gray-600 text-sm max-w-xs">
+          Professional virtual assistant services to help you focus on what matters most for your business.
+        </p>
+        
+        <div class="pt-4">
+          <p class="text-sm text-gray-500">
+            &copy; {currentYear} VA Services. {t('footer.rights')}
+          </p>
+        </div>
+      </div>
+      
+      <!-- Footer links -->
+      {footerLinks.map(column => (
+        <div>
+          <h3 class="font-medium text-gray-900 mb-4">{column.title}</h3>
+          <ul class="space-y-3">
+            {column.links.map(link => (
+              <li>
+                <a 
+                  href={link.href} 
+                  class="text-gray-600 hover:text-primary transition-colors text-sm flex items-center gap-2"
+                >
+                  {link.icon && <span class={link.icon}></span>}
+                  {link.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    
+    <!-- Bottom bar -->
+    <div class="mt-12 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-4">
+        <a href={`/${lang}`} class="text-gray-600 hover:text-primary text-sm">Home</a>
+        <a href={`/${lang}/#services`} class="text-gray-600 hover:text-primary text-sm">Services</a>
+        <a href={`/${lang}/#contact`} class="text-gray-600 hover:text-primary text-sm">Contact</a>
+      </div>
+      
+      <div class="text-sm text-gray-500">
+        Designed with ❤️ for professionals
+      </div>
+    </div>
+  </div>
+</footer>

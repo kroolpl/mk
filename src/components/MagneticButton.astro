@@ -1,0 +1,39 @@
+---
+interface Props {
+  href: string;
+  class?: string;
+}
+
+const { href, class: className } = Astro.props;
+---
+
+<a
+  href={href}
+  class={`inline-block ${className}`}
+  x-data="{ 
+    active: false,
+    posX: 0,
+    posY: 0,
+    magneticMove(e) {
+      const bounds = $el.getBoundingClientRect();
+      const centerX = bounds.left + bounds.width / 2;
+      const centerY = bounds.top + bounds.height / 2;
+      const deltaX = Math.floor((e.clientX - centerX) * 0.2);
+      const deltaY = Math.floor((e.clientY - centerY) * 0.2);
+      
+      this.posX = deltaX;
+      this.posY = deltaY;
+      this.active = true;
+    },
+    resetPosition() {
+      this.posX = 0;
+      this.posY = 0;
+      this.active = false;
+    }
+  }"
+  @mousemove="magneticMove"
+  @mouseleave="resetPosition"
+  :style="`transform: translate(${posX}px, ${posY}px) scale(${active ? 1.1 : 1})`"
+>
+  <slot />
+</a> 
