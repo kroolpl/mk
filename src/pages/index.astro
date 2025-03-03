@@ -1,11 +1,17 @@
 ---
-import { getLangFromUrl } from '../i18n/utils';
-import { defaultLang } from '../i18n/ui';
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import About from '../components/About.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { useTranslations } from '../i18n/utils';
 
-const lang = getLangFromUrl(Astro.url);
-
-// Redirect to the default language version
-if (Astro.url.pathname === '/') {
-  return Astro.redirect(`/${defaultLang}`);
-}
+const t = useTranslations('pl');
 ---
+
+<Layout title={t('hero.title')}>
+  <Hero transition:animate="fade" />
+  <Services transition:animate="slide" />
+  <About transition:animate="slide" />
+  <Testimonials transition:animate="slide" />
+</Layout>
