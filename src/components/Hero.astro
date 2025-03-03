@@ -6,23 +6,27 @@ import mkImage from '../assets/images/mk.jpg';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
+// Remove the hardcoded features array and use translations directly
 const features = [
   { 
     icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
-    title: 'Professional Support'
+    translationKey: 'hero.feature.support'
   },
   { 
     icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
-    title: 'Fast Delivery'
+    translationKey: 'hero.feature.delivery'
   },
   { 
     icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>`,
-    title: 'Quality Guaranteed'
+    translationKey: 'hero.feature.quality'
   }
 ];
 ---
 
-<section class="relative py-20 lg:py-32 overflow-hidden">
+<section 
+  class="relative py-20 lg:py-32 overflow-hidden"
+  transition:animate="fade"
+>
   <!-- Subtle background gradient -->
   <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50"></div>
   
@@ -50,7 +54,11 @@ const features = [
         </div>
         
         <div class="flex flex-wrap gap-4">
-          <a href={`/${lang}/#contact`} class="btn btn-primary group">
+          <a 
+            href={`/${lang}/#contact`} 
+            class="btn btn-primary group"
+            onclick="scrollToSection(event, '#contact')"
+          >
             <span class="flex items-center gap-2">
               {t('hero.cta')}
               <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none">
@@ -59,22 +67,24 @@ const features = [
             </span>
           </a>
           
-          <a href={`/${lang}/#services`} class="btn bg-white shadow-sm hover:shadow-md border border-gray-200">
+          <a 
+            href={`/${lang}/#services`} 
+            class="btn bg-white shadow-sm hover:shadow-md border border-gray-200"
+            onclick="scrollToSection(event, '#services')"
+          >
             {t('hero.secondary')}
           </a>
         </div>
         
         <!-- Feature list -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-          {features.map((feature, index) => (
+          {features.map((feature) => (
             <div class="flex items-center gap-3 group">
               <div class="p-2 rounded-lg text-primary bg-white shadow-sm group-hover:bg-primary group-hover:text-white transition-colors">
                 <div set:html={feature.icon}></div>
               </div>
               <p class="font-medium">
-                {index === 0 ? t('hero.feature.support') : 
-                 index === 1 ? t('hero.feature.delivery') : 
-                 t('hero.feature.quality')}
+                {t(feature.translationKey)}
               </p>
             </div>
           ))}

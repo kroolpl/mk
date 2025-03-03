@@ -7,6 +7,39 @@ import logoSvg from '../assets/images/logo.svg';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+// Update the scroll function to handle cross-page navigation
+const scrollToSection = `
+  function scrollToSection(event, sectionId, isCurrentPage = false) {
+    if (!sectionId) return;
+    event.preventDefault();
+    
+    if (!isCurrentPage) {
+      // If we're not on the home page, navigate there first
+      const baseUrl = window.location.pathname.includes('/kontakt') 
+        ? window.location.pathname.replace('/kontakt', '') 
+        : window.location.pathname;
+      window.location.href = baseUrl + sectionId;
+      return;
+    }
+
+    // If we're already on the home page, just scroll
+    const element = document.querySelector(sectionId);
+    if (element) {
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  }
+`;
+
+type NavItem = keyof typeof ui['en'] & `nav.${string}`;
+const navItems = ['home', 'services', 'about', 'testimonials', 'contact'] as const;
 ---
 
 <header 
@@ -19,7 +52,8 @@ const t = useTranslations(lang);
     }
   }"
   @scroll.window="updateScroll"
-  :class="{ 'shadow-md bg-white/90': scrolled, 'bg-transparent': !scrolled }"
+  @astro:page-load="updateScroll()"
+  :class="{ 'shadow-md bg-white/90 backdrop-blur-sm': scrolled, 'bg-transparent': !scrolled }"
   class="fixed w-full transition-all duration-300 z-50"
 >
   <div class="absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300" :style="`width: ${scrollProgress}%`"></div>
@@ -40,13 +74,14 @@ const t = useTranslations(lang);
     </a>
     
     <div class="hidden md:flex items-center space-x-8">
-      <nav class="flex space-x-6">
-        {['home', 'services', 'about', 'testimonials', 'contact'].map((item) => (
+      <nav class="hidden md:flex space-x-6">
+        {navItems.map((item) => (
           <a 
-            href={`/${lang}${item === 'home' ? '' : `/#${item}`}`} 
+            href={`/${lang}${item === 'home' ? '' : item === 'contact' ? '/kontakt' : `/#${item}`}`}
             class="text-dark hover:text-primary transition-colors relative group"
+            onclick={item !== 'home' && item !== 'contact' ? `scrollToSection(event, '#${item}', !window.location.pathname.includes('/kontakt'))` : undefined}
           >
-            {t(`nav.${item}` as keyof typeof ui['en'])}
+            {t(`nav.${item}` as NavItem)}
             <span class="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
           </a>
         ))}
@@ -77,29 +112,48 @@ const t = useTranslations(lang);
           fill="none" 
           viewBox="0 0 24 24" 
           stroke="currentColor"
-          style="display: none;"
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
       
       <div 
-        x-show="mobileMenuOpen" 
-        x-transition:enter="transition ease-out duration-200" 
-        x-transition:enter-start="opacity-0 -translate-y-4" 
-        x-transition:enter-end="opacity-100 translate-y-0" 
-        x-transition:leave="transition ease-in duration-150" 
-        x-transition:leave-start="opacity-100 translate-y-0" 
-        x-transition:leave-end="opacity-0 -translate-y-4" 
-        class="absolute top-16 left-0 right-0 bg-white shadow-lg p-4 space-y-4"
-        style="display: none;"
+        x-show="mobileMenuOpen"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 -translate-y-4"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 -translate-y-4"
+        class="absolute top-full left-0 right-0 bg-white shadow-lg p-4 space-y-4"
       >
         <nav class="flex flex-col space-y-3">
-          <a href={`/${lang}`} class="text-dark hover:text-primary transition-colors" @click="mobileMenuOpen = false">{t('nav.home')}</a>
-          <a href={`/${lang}/#services`} class="text-dark hover:text-primary transition-colors" @click="mobileMenuOpen = false">{t('nav.services')}</a>
-          <a href={`/${lang}/#about`} class="text-dark hover:text-primary transition-colors" @click="mobileMenuOpen = false">{t('nav.about')}</a>
-          <a href={`/${lang}/#testimonials`} class="text-dark hover:text-primary transition-colors" @click="mobileMenuOpen = false">{t('nav.testimonials')}</a>
-          <a href={`/${lang}/#contact`} class="text-dark hover:text-primary transition-colors" @click="mobileMenuOpen = false">{t('nav.contact')}</a>
+          <a 
+            href={`/${lang}`} 
+            class="text-dark hover:text-primary transition-colors" 
+            @click="mobileMenuOpen = false"
+          >
+            {t('nav.home')}
+          </a>
+          {['services', 'about', 'testimonials'].map((item) => (
+            <a 
+              href={`/${lang}/#${item}`} 
+              class="text-dark hover:text-primary transition-colors" 
+              @click.prevent={`
+                mobileMenuOpen = false;
+                scrollToSection($event, '#${item}', !window.location.pathname.includes('/kontakt'));
+              `}
+            >
+              {t(`nav.${item}` as NavItem)}
+            </a>
+          ))}
+          <a 
+            href={`/${lang}/kontakt`} 
+            class="text-dark hover:text-primary transition-colors" 
+            @click="mobileMenuOpen = false"
+          >
+            {t('nav.contact')}
+          </a>
         </nav>
         <div class="pt-2 border-t border-gray-200">
           <LanguagePicker />
@@ -108,3 +162,6 @@ const t = useTranslations(lang);
     </div>
   </div>
 </header>
+
+<!-- Add the script -->
+<script set:html={scrollToSection}></script>

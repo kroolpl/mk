@@ -7,6 +7,7 @@ import Footer from '../components/Footer.astro';
 import { Image } from 'astro:assets';
 import logoSvg from '../assets/images/logo.svg';
 import '../styles/animations.css';
+import { ViewTransitions } from 'astro:transitions';
 
 export interface Props {
   title: string;
@@ -28,12 +29,18 @@ const t = useTranslations(lang);
     <meta name="description" content={description} />
     <title>{title}</title>
     
+    <!-- Add ViewTransitions -->
+    <ViewTransitions />
+    
     <!-- Add OpenGraph and Twitter meta tags -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    
+    <!-- Add x-default for Polish -->
+    <link rel="alternate" href={`${Astro.site}pl`} hreflang="x-default" />
     
     <!-- Add language alternates for SEO -->
     {Object.keys(languages).map((supportedLang) => (
@@ -51,11 +58,11 @@ const t = useTranslations(lang);
         console.log('Alpine.js initialized');
       });
     </script>
-    <Header />
-    <main class="flex-grow">
+    <Header transition:persist />
+    <main class="flex-grow" transition:animate="slide">
       <slot />
     </main>
-    <Footer />
+    <Footer transition:persist />
   </body>
 </html>
 

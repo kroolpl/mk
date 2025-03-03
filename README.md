@@ -46,4 +46,18 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-# mk
+
+# Multilingual Virtual Assistant Website
+
+## Features
+- Multi-language support (Polish as default, English as secondary)
+- Responsive design
+- Accessibility compliant
+- SEO optimized
+
+## Setup
+...
+
+## Language Management
+The website uses Polish (PL) as the default language with English (EN) as a secondary option.
+...

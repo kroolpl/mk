@@ -1,13 +1,13 @@
-// Add type definitions for translations
-export type Language = 'en' | 'pl';
+// Add stricter types for translations
+export type Language = 'pl' | 'en';
 
 // Use a more flexible approach to allow adding new keys
-export type TranslationKey = string;
+export type TranslationKey = keyof typeof import('./ui').ui['pl'];
 
 export interface Translation {
-  [key: string]: string;
+  [key in TranslationKey]: string;
 }
 
 export interface Languages {
-  [key: Language]: string;
+  [key in Language]: string;
 } 

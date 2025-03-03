@@ -15,6 +15,9 @@ const flags = {
   <button 
     @click="open = !open" 
     class="flex items-center space-x-2 text-dark hover:text-primary transition-colors"
+    aria-expanded="false"
+    :aria-expanded="open.toString()"
+    aria-controls="language-menu"
   >
     <span class="text-xl" role="img" aria-label={`Flag for ${languages[currentLang]}`}>
       {flags[currentLang]}
@@ -33,6 +36,9 @@ const flags = {
   </button>
   
   <div 
+    id="language-menu"
+    role="menu"
+    aria-orientation="vertical"
     x-show="open" 
     @click.away="open = false"
     x-transition:enter="transition ease-out duration-100" 

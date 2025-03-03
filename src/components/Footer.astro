@@ -3,12 +3,25 @@ import { getLangFromUrl, useTranslations } from '../i18n/utils';
 import { Image } from 'astro:assets';
 import logoSvg from '../assets/images/logo.svg';
 
+// Add type definitions at the top
+type FooterLink = {
+  name: string;
+  href: string;
+  icon?: string;
+};
+
+type FooterSection = {
+  title: string;
+  links: FooterLink[];
+};
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const currentYear = new Date().getFullYear();
 
-const footerLinks = [
+// Update the footerLinks declaration
+const footerLinks: FooterSection[] = [
   {
     title: 'Services',
     links: [

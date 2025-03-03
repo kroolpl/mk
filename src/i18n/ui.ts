@@ -3,7 +3,7 @@ export const languages = {
   pl: 'Polski'
 } as const;
 
-export const defaultLang = 'en';
+export const defaultLang = 'pl';
 
 export const ui = {
   en: {
@@ -19,6 +19,12 @@ export const ui = {
     'hero.badge': 'Professional Service',
     'hero.demo': 'Watch Demo',
     'hero.trusted': 'Trusted by leading companies',
+    'hero.virtual.assistant': 'Virtual Assistant',
+    'hero.feature.support': 'Professional Support',
+    'hero.feature.delivery': 'Fast Delivery',
+    'hero.feature.quality': 'Guaranteed Quality',
+    'hero.stats.years': 'Years',
+    'hero.stats.clients': 'Clients',
     'services.title': 'My Services',
     'services.subtitle': 'Professional support tailored to your needs',
     'service1.title': 'Email Management',
@@ -54,7 +60,16 @@ export const ui = {
     'contact.submit': 'Send Message',
     'contact.success': 'Your message has been sent successfully!',
     'contact.error': 'There was an error sending your message. Please try again.',
+    'contact.availability': 'Business Hours',
+    'contact.sending': 'Sending...',
     'footer.rights': 'All rights reserved',
+    'contact.badge': 'Get in Touch',
+    'contact.social': 'Social Media',
+    'contact.form.title': 'Send Us a Message',
+    'contact.form.subtitle': 'We\'ll get back to you as soon as possible',
+    'contact.faq': 'Frequently Asked Questions',
+    'contact.faq1.question': 'What are your working hours?',
+    'contact.faq1.answer': 'We operate Monday through Friday, from 9:00 AM to 5:00 PM (CET).',
   },
   pl: {
     'nav.home': 'Strona główna',
@@ -110,6 +125,15 @@ export const ui = {
     'contact.submit': 'Wyślij Wiadomość',
     'contact.success': 'Twoja wiadomość została wysłana pomyślnie!',
     'contact.error': 'Wystąpił błąd podczas wysyłania wiadomości. Spróbuj ponownie.',
+    'contact.availability': 'Godziny pracy',
+    'contact.sending': 'Wysyłanie...',
     'footer.rights': 'Wszelkie prawa zastrzeżone',
+    'contact.badge': 'Skontaktuj się',
+    'contact.social': 'Media Społecznościowe',
+    'contact.form.title': 'Wyślij Nam Wiadomość',
+    'contact.form.subtitle': 'Odpowiemy najszybciej jak to możliwe',
+    'contact.faq': 'Często Zadawane Pytania',
+    'contact.faq1.question': 'Jakie są godziny pracy?',
+    'contact.faq1.answer': 'Pracujemy od poniedziałku do piątku, w godzinach 9:00 - 17:00.',
   },
 } as const;
